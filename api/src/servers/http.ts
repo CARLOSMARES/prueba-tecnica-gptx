@@ -1,3 +1,4 @@
+"use strict";
 import * as http from "http";
 export class ServerHTTP {
   private address: string;

@@ -1,3 +1,4 @@
+"use strict";
 import express from "express";
 import http, { Server } from "http";
 import { API } from "./interfaces";

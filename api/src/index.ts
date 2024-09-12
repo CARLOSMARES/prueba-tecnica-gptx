@@ -1,3 +1,4 @@
+"use strict";
 import dotenv from "dotenv";
 import { ExpressApi } from "./api/api";
 import { API } from "./api/interfaces";
