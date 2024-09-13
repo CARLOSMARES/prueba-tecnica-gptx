@@ -2,6 +2,7 @@
 import dotenv from "dotenv";
 import { ExpressApi } from "./api/api";
 import { API } from "./api/interfaces";
+import tbDatosUsuario from "./model/datos_usuario";
 import { ServerHTTP } from "./servers/http";
 dotenv.config();
 const host = process.env.Server_URL || "http://localhost";
@@ -11,6 +12,7 @@ const api: API = new ExpressApi(BASE_URL);
 const httpServer = new ServerHTTP(host, port, api.createServer());
 try {
   httpServer.listen();
+  tbDatosUsuario();
 } catch (error) {
   if (error instanceof Error) {
     console.log(`Error starting server: ${error.message}`);
