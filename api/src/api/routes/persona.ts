@@ -1,95 +1,136 @@
 "use strict";
 import { Request, Response } from "express";
 import { turso } from "../../config/db";
+import { Usuario } from "../../interfaces/datosUsuario.interface";
+
+// Helper function to handle errors
+const handleError = (res: Response, error: unknown, message: string) => {
+  if (error instanceof Error) {
+    console.error(error); // Log the error for debugging purposes
+    res.status(500).json({ error: message });
+  } else {
+    console.error("An unknown error occurred:", error);
+    res.status(500).json({ error: "An unknown error occurred." });
+  }
+};
+
+// Get all users
 export const getAll = async (req: Request, res: Response) => {
   try {
     const result = await turso.execute({
-      sql: "select * from Usuario",
-      args: {},
+      sql: "SELECT * FROM Usuario",
+      args: [],
     });
-    res.status(200).json({
-      result: result.rows,
-    });
+    res.status(200).json(result.rows);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while retrieving data." });
+    handleError(res, error, "An error occurred while retrieving data.");
   }
 };
+
+// Get user by ID
 export const getId = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
     const result = await turso.execute({
-      sql: "select * from Usuario where Name = ?",
-      args: req.params,
+      sql: "SELECT * FROM Usuario WHERE id = ?",
+      args: [id],
     });
-    res.status(200).json({
-      result: result.rows,
-    });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while retrieving data" });
+    handleError(res, error, "An error occurred while retrieving data.");
   }
 };
 
-export const Create = async (req: Request, res: Response) => {
+// Create new user
+export const create = async (req: Request, res: Response) => {
   try {
-    const { name, apellidopaterno, apellidomaterno, direccion, telefono } =
-      req.body;
+    const usuario: Usuario = req.body;
 
     if (
-      !name ||
-      !apellidopaterno ||
-      !apellidomaterno ||
-      !direccion ||
-      !telefono
+      !usuario.nombres ||
+      !usuario.apellidoPaterno ||
+      !usuario.apellidoMaterno ||
+      !usuario.direccion ||
+      !usuario.telefono
     ) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
     const result = await turso.execute({
-      sql: "INSERT INTO Usuario (nombres, apellidopaterno, apellidomaterno, direccion, telefono) VALUES (?, ?, ?, ?, ?)",
-      args: [name, apellidopaterno, apellidomaterno, direccion, telefono],
+      sql: "INSERT INTO Usuario (nombres, apellidoPaterno, apellidoMaterno, direccion, telefono) VALUES (?, ?, ?, ?, ?)",
+      args: [
+        usuario.nombres,
+        usuario.apellidoPaterno,
+        usuario.apellidoMaterno,
+        usuario.direccion,
+        usuario.telefono,
+      ],
     });
 
-    res.status(201).json({
-      message: "successfully created person.",
-      result: result,
-    });
-  } catch (err) {
-    res.status(500).json(err);
+    res.status(201).json({ message: "User successfully created.", result });
+  } catch (error) {
+    handleError(res, error, "An error occurred while creating user.");
   }
 };
 
-export const Delete = async (req: Request, res: Response) => {
+// Delete user
+export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const id = req.body.id;
+    const { id } = req.body;
     const result = await turso.execute({
-      sql: "delete from Usuario where id = ?",
-      args: { id },
+      sql: "DELETE FROM Usuario WHERE id = ?",
+      args: [id],
     });
-    res.status(200).json({
-      result: result,
-      message: "Delete register",
-    });
+
+    // Verifica si la eliminación afectó alguna fila
+    if (result.rowsAffected === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ message: "User successfully deleted." });
   } catch (error) {
-    res.status(500).json({ error: "An error occurred with delete register" });
+    handleError(res, error, "An error occurred while deleting user.");
   }
 };
 
-export const Update = async (req: Request, res: Response) => {
+// Update user
+export const update = async (req: Request, res: Response) => {
   try {
-    const { id, name, apellidopaterno, apellidomaterno, direccion, telefono } =
-      req.body;
+    const usuario: Usuario & { id: string } = req.body;
+
+    if (
+      !usuario.id ||
+      !usuario.nombres ||
+      !usuario.apellidoPaterno ||
+      !usuario.apellidoMaterno ||
+      !usuario.direccion ||
+      !usuario.telefono
+    ) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
 
     const result = await turso.execute({
-      sql: "update Usuario where id = ? values (?)",
-      args: {
-        id,
-        name,
-        apellidopaterno,
-        apellidomaterno,
-        direccion,
-        telefono,
-      },
+      sql: "UPDATE Usuario SET nombres = ?, apellidoPaterno = ?, apellidoMaterno = ?, direccion = ?, telefono = ? WHERE id = ?",
+      args: [
+        usuario.nombres,
+        usuario.apellidoPaterno,
+        usuario.apellidoMaterno,
+        usuario.direccion,
+        usuario.telefono,
+        usuario.id,
+      ],
     });
+
+    // Verifica si la actualización afectó alguna fila
+    if (result.rowsAffected === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ message: "User successfully updated." });
   } catch (error) {
-    res.status(500).json({ error: "An error ocurred with update register" });
+    handleError(res, error, "An error occurred while updating user.");
   }
 };

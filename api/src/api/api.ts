@@ -16,9 +16,9 @@ export class ExpressApi implements API {
     this.router.get("/health", routes.healthCheck);
     this.router.get("/persona/getAll", routes.getAll);
     this.router.get("/persona/getName/:name", routes.getId);
-    this.router.post("/persona/create", routes.Create);
-    this.router.delete("/persona/delete", routes.Delete);
-    this.router.put("/persona/update", routes.Update);
+    this.router.post("/persona/create", routes.create);
+    this.router.delete("/persona/delete", routes.deleteUser);
+    this.router.put("/persona/update", routes.update);
   }
 
   public createServer = (): Server => {
