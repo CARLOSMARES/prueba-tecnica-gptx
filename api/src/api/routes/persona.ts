@@ -18,7 +18,7 @@ export const getId = async (req: Request, res: Response) => {
   try {
     const result = await turso.execute({
       sql: "select * from Usuario where Name = ?",
-      args: req.body.name,
+      args: req.params,
     });
     res.status(200).json({
       result: result.rows,
