@@ -6,7 +6,7 @@ import { Persona } from '../interface/persona';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseURL: string = 'http://localhost:300/personas';
+  private baseURL: string = 'http://localhost:3000/persona';
   constructor(private http: HttpClient) {}
 
   getPersonas(): Observable<Persona[]> {

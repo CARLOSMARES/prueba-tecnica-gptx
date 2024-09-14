@@ -1,1 +1,27 @@
-<router-outlet />
+<h1>Directorio</h1>
+{{ persona.nombres }}
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido Paterno</th>
+      <th>Apellido Materno</th>
+      <th>Dirección</th>
+      <th>Teléfono</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Carlos</td>
+      <td>Mares</td>
+      <td>Hernández</td>
+      <td>Calle Principal #123</td>
+      <td>555-1234-5678</td>
+      <td>
+        <button class="btn btn-editar">Editar</button>
+        <button class="btn btn-eliminar">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
