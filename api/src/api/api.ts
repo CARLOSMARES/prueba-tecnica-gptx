@@ -16,13 +16,15 @@ export class ExpressApi implements API {
     this.router.get("/health", routes.healthCheck);
     this.router.get("/persona/getAll", routes.getAll);
     this.router.get("/persona/getName/:name", routes.getId);
-    this.router.post("/peronsa/creatre", routes.Create);
+    this.router.post("/persona/create", routes.Create);
     this.router.delete("/persona/delete", routes.Delete);
     this.router.put("/persona/update", routes.Update);
   }
 
   public createServer = (): Server => {
     const expressApp: express.Application = express();
+
+    expressApp.use(express.json());
 
     expressApp.use("/", this.router);
 

@@ -15,8 +15,9 @@ export class AppComponent {
   persona: Persona[] = [];
 
   constructor(private personaServicio: ApiService) {
-    personaServicio.getPersonas().subscribe((peronsa: Persona[]) => {
-      this.persona = peronsa;
+    personaServicio.getPersonas().subscribe((persona) => {
+      console.log(persona);
+      this.persona = persona;
     });
   }
 }

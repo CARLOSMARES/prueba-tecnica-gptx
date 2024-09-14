@@ -32,20 +32,28 @@ export const Create = async (req: Request, res: Response) => {
   try {
     const { name, apellidopaterno, apellidomaterno, direccion, telefono } =
       req.body;
+
+    if (
+      !name ||
+      !apellidopaterno ||
+      !apellidomaterno ||
+      !direccion ||
+      !telefono
+    ) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
     const result = await turso.execute({
-      sql: "insert into Usuario values (?)",
-      args: {
-        name,
-        apellidopaterno,
-        apellidomaterno,
-        direccion,
-        telefono,
-      },
+      sql: "INSERT INTO Usuario (nombres, apellidopaterno, apellidomaterno, direccion, telefono) VALUES (?, ?, ?, ?, ?)",
+      args: [name, apellidopaterno, apellidomaterno, direccion, telefono],
     });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "An error occured with register new person" });
+
+    res.status(201).json({
+      message: "successfully created person.",
+      result: result,
+    });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
