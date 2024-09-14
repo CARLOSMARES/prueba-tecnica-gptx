@@ -3,6 +3,7 @@ import express from "express";
 import http, { Server } from "http";
 import { API } from "./interfaces";
 import * as routes from "./routes/routes";
+const cors = require("cors");
 
 export class ExpressApi implements API {
   private router: express.Router;
@@ -25,6 +26,7 @@ export class ExpressApi implements API {
     const expressApp: express.Application = express();
 
     expressApp.use(express.json());
+    expressApp.use(cors());
 
     expressApp.use("/", this.router);
 

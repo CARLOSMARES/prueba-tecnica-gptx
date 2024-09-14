@@ -1,5 +1,5 @@
 <h1>Directorio</h1>
-{{ persona.nombres }}
+
 <table>
   <thead>
     <tr>
@@ -13,15 +13,22 @@
   </thead>
   <tbody>
     <tr>
-      <td>Carlos</td>
-      <td>Mares</td>
-      <td>Hernández</td>
-      <td>Calle Principal #123</td>
-      <td>555-1234-5678</td>
+      @for (personas of personas; track personas.id){
+
+      <td>{{ personas.nombres }}</td>
+      <td>{{ personas.apellidoPaterno }}</td>
+      <td>{{ personas.apellidoMaterno }}</td>
+      <td>{{ personas.direccion }}</td>
+      <td>{{ personas.telefono }}</td>
       <td>
-        <button class="btn btn-editar">Editar</button>
-        <button class="btn btn-eliminar">Eliminar</button>
+        <button class="btn btn-editar" (click)="editPersona(personas)">
+          Editar
+        </button>
+        <button class="btn btn-eliminar" (click)="deletePersona(personas.id!)">
+          Eliminar
+        </button>
       </td>
+      }
     </tr>
   </tbody>
 </table>
