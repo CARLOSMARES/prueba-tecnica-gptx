@@ -14,6 +14,8 @@ export class ExpressApi implements API {
 
     this.router.get("/", routes.welcome);
     this.router.get("/health", routes.healthCheck);
+    this.router.get("/persona/getAll", routes.getAll);
+    this.router.get("/persona/getId", routes.getId);
   }
 
   public createServer = (): Server => {
