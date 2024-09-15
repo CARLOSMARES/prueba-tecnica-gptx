@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Persona } from '../interface/persona';
@@ -15,10 +15,8 @@ export class ApiService {
     return this.http.get<Persona[]>(`${this.baseURL}/getAll`);
   }
 
-  getPersona(nombre: string): Observable<Persona[]> {
-    return this.http.get<Persona[]>(`${this.baseURL}/getName`, {
-      params: new HttpParams().set('name', nombre),
-    });
+  getPersona(telefono: string): Observable<Persona> {
+    return this.http.get<Persona>(`${this.baseURL}/getTelefono/${telefono}`);
   }
 
   updatePersona(persona: Persona): Observable<Persona> {

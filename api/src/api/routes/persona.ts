@@ -30,10 +30,10 @@ export const getAll = async (req: Request, res: Response) => {
 // Get user by ID
 export const getId = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { telefono } = req.params;
     const result = await turso.execute({
-      sql: "SELECT * FROM Usuario WHERE id = ?",
-      args: [id],
+      sql: "SELECT * FROM Usuario WHERE telefono = ?",
+      args: [telefono],
     });
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "User not found." });

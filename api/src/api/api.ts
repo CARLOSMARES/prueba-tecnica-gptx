@@ -16,7 +16,7 @@ export class ExpressApi implements API {
     this.router.get("/", routes.welcome);
     this.router.get("/health", routes.healthCheck);
     this.router.get("/persona/getAll", routes.getAll);
-    this.router.get("/persona/getName/:name", routes.getId);
+    this.router.get("/persona/getTelefono/:telefono", routes.getId);
     this.router.post("/persona/create", routes.create);
     this.router.delete("/persona/delete", routes.deleteUser);
     this.router.put("/persona/update", routes.update);

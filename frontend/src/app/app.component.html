@@ -1,8 +1,12 @@
 <h1>Directorio</h1>
+<button class="btn btn-editar" id="add" (click)="openNewDialog()">
+  Nuevo usuario
+</button>
 
 <table>
   <thead>
     <tr>
+      <th>Numero</th>
       <th>Nombre</th>
       <th>Apellido Paterno</th>
       <th>Apellido Materno</th>
@@ -12,23 +16,170 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      @for (personas of personas; track personas.id){
-
-      <td>{{ personas.nombres }}</td>
-      <td>{{ personas.apellidoPaterno }}</td>
-      <td>{{ personas.apellidoMaterno }}</td>
-      <td>{{ personas.direccion }}</td>
-      <td>{{ personas.telefono }}</td>
+    <tr *ngFor="let persona of personas; trackBy: trackById">
+      <td>{{ persona.id }}</td>
+      <td>{{ persona.nombres }}</td>
+      <td>{{ persona.apellidoPaterno }}</td>
+      <td>{{ persona.apellidoMaterno }}</td>
+      <td>{{ persona.direccion }}</td>
+      <td>{{ persona.telefono }}</td>
       <td>
-        <button class="btn btn-editar" (click)="editPersona(personas)">
+        <button class="btn btn-editar" (click)="editPersona(persona)">
           Editar
         </button>
-        <button class="btn btn-eliminar" (click)="deletePersona(personas.id!)">
+        <button class="btn btn-eliminar" (click)="deletePersona(persona.id!)">
           Eliminar
         </button>
       </td>
-      }
     </tr>
   </tbody>
 </table>
+
+<dialog id="modify">
+  <form (ngSubmit)="onSubmit()" #personasForm="ngForm">
+    <div *ngIf="selectedPersona">
+      <label for="nombres">Nombres:</label>
+      <input
+        id="nombres"
+        name="nombres"
+        [(ngModel)]="selectedPersona.nombres"
+        #nombres="ngModel"
+        required
+      />
+      <div *ngIf="nombres.invalid && nombres.touched">
+        Este campo es obligatorio
+      </div>
+
+      <label for="apellidoPaterno">Apellido Paterno:</label>
+      <input
+        id="apellidoPaterno"
+        name="apellidoPaterno"
+        [(ngModel)]="selectedPersona.apellidoPaterno"
+        #apellidoPaterno="ngModel"
+        required
+      />
+      <div *ngIf="apellidoPaterno.invalid && apellidoPaterno.touched">
+        Este campo es obligatorio
+      </div>
+
+      <label for="apellidoMaterno">Apellido Materno:</label>
+      <input
+        id="apellidoMaterno"
+        name="apellidoMaterno"
+        [(ngModel)]="selectedPersona.apellidoMaterno"
+        #apellidoMaterno="ngModel"
+        required
+      />
+      <div *ngIf="apellidoMaterno.invalid && apellidoMaterno.touched">
+        Este campo es obligatorio
+      </div>
+
+      <label for="direccion">Dirección:</label>
+      <input
+        id="direccion"
+        name="direccion"
+        [(ngModel)]="selectedPersona.direccion"
+        #direccion="ngModel"
+        required
+      />
+      <div *ngIf="direccion.invalid && direccion.touched">
+        Este campo es obligatorio
+      </div>
+
+      <label for="telefono">Teléfono:</label>
+      <input
+        type="tel"
+        id="telefono"
+        name="telefono"
+        [(ngModel)]="selectedPersona.telefono"
+        #telefono="ngModel"
+        required
+      />
+      <div *ngIf="telefono.invalid && telefono.touched">
+        Este campo es obligatorio
+      </div>
+
+      <button type="submit" [disabled]="personasForm.invalid">Enviar</button>
+      <button type="button" (click)="closeEditDialog()">Cerrar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="new">
+  <form (ngSubmit)="onSubmit()" #personasForm="ngForm">
+    <div>
+      <label for="nombres">Nombres:</label>
+      <input
+        id="nombres"
+        name="nombres"
+        [(ngModel)]="newPersona.nombres"
+        #nombres="ngModel"
+        required
+      />
+      <div *ngIf="nombres.invalid && nombres.touched">
+        Este campo es obligatorio
+      </div>
+    </div>
+
+    <div>
+      <label for="apellidoPaterno">Apellido Paterno:</label>
+      <input
+        id="apellidoPaterno"
+        name="apellidoPaterno"
+        [(ngModel)]="newPersona.apellidoPaterno"
+        #apellidoPaterno="ngModel"
+        required
+      />
+      <div *ngIf="apellidoPaterno.invalid && apellidoPaterno.touched">
+        Este campo es obligatorio
+      </div>
+    </div>
+
+    <div>
+      <label for="apellidoMaterno">Apellido Materno:</label>
+      <input
+        id="apellidoMaterno"
+        name="apellidoMaterno"
+        [(ngModel)]="newPersona.apellidoMaterno"
+        #apellidoMaterno="ngModel"
+        required
+      />
+      <div *ngIf="apellidoMaterno.invalid && apellidoMaterno.touched">
+        Este campo es obligatorio
+      </div>
+    </div>
+
+    <div>
+      <label for="direccion">Dirección:</label>
+      <input
+        id="direccion"
+        name="direccion"
+        [(ngModel)]="newPersona.direccion"
+        #direccion="ngModel"
+        required
+      />
+      <div *ngIf="direccion.invalid && direccion.touched">
+        Este campo es obligatorio
+      </div>
+    </div>
+
+    <div>
+      <label for="telefono">Teléfono:</label>
+      <input
+        type="tel"
+        id="telefono"
+        name="telefono"
+        [(ngModel)]="newPersona.telefono"
+        #telefono="ngModel"
+        required
+        maxlength=""
+      />
+      <div *ngIf="telefono.invalid && telefono.touched">
+        Este campo es obligatorio
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="personasForm.invalid">Enviar</button>
+    <button type="button" (click)="closeNewDialog()">Cerrar</button>
+  </form>
+</dialog>
