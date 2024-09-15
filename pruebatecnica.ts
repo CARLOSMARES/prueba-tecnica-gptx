@@ -10,12 +10,20 @@ console.log(toOrder);
 console.log(newtoOrder);
 
 function numberRepeatColor() {
-  let Rojo: Number = 0;
-  let verde: number = 0;
-  let Azul: number = 0;
-  let Amarillo: number = 0;
-  let Negro: number = 0;
+  const colorCounts = {
+    Rojo: 0,
+    Verde: 0,
+    Azul: 0,
+    Amarillo: 0,
+  };
 
-  //Saber cuantas veces se repite un color
-  newtoOrder.forEach(() => {});
+  order.forEach((color) => {
+    if (colorCounts.hasOwnProperty(color)) {
+      colorCounts[color]++;
+    }
+  });
+
+  return colorCounts;
 }
+
+console.log("Color Counts:", numberRepeatColor());
